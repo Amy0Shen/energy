@@ -1,5 +1,94 @@
 # Data
 
-## Description
+### 2.1 Technical description
 
-## Missing value analysis
+The data is collected and distributed by the U.S. Energy Information Administration.
+
+Data source link: <https://www.eia.gov/totalenergy/data/monthly/>
+
+This data source contains multiple data tables, and we will focus on the following data tables:
+
+1.  Energy Review Category: "Primary energy overview", "Primary energy production by source", "Primary energy consumption by source"
+2.  Renewable Energy Category: "Production and consumption by source"
+3.  Environment Category: "By source"
+4.  Energy Prices Category
+
+### 2.2 Research plan
+
+1.  **Unveiling Energy Trends:**
+
+    Data Source: Utilize "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+
+    Techniques: Implement histograms or ridgeline plots to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.
+
+2.  **Balancing Production and Consumption:**
+
+    Data Source: Utilize "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+
+    Techniques: Utilize boxplots or scatterplots to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.
+
+3.  **Price Dynamics and Supply-Demand:**
+
+    Data Source: Utilize "Energy Prices" and "Primary energy overview" from the dataset.
+
+    Techniques: Employ bar plots, Cleveland dot plots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.
+
+4.  **Renewable Energy's impact on Conventional Sources**
+
+    Data Source: Utilize "Production and consumption by source" of "Renewable Energy", "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+
+    Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
+
+5.  **Carbon Emissions and Energy Mix:**
+
+    Data Source: Utilize Carbon dioxide emissions by source" of "Environment".
+
+    Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
+
+### 2.3 Missing value analysis
+
+```{r, warning=FALSE}
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+renewable <- read.csv("C:/Users/admin/Desktop/renewable.csv")
+```
+
+```{r}
+colSums(is.na(renewable)) %>%
+  sort(decreasing = TRUE)
+rowSums(is.na(head(renewable))) %>%
+  sort(decreasing = TRUE)
+```
+
+```{r}
+renewable$year <- substr(renewable$Month, 1, 4)
+renewable_year <- renewable %>%
+  group_by(year) %>%
+  summarise(across(-Month, mean))
+
+newdata <- renewable_year %>%
+  gather(key, value, -year) %>%
+  mutate(missing = ifelse(is.na(value), "yes", "no"))
+```
+
+```{r, fig.height=9, fig.width=12}
+ggplot(newdata, aes(x = key, y = fct_rev(year), fill = missing)) +
+  geom_tile(color = "white") + 
+  ggtitle("Renewable with NAs added") +
+  ylab('') + 
+  scale_fill_viridis_d() + # discrete scale
+  theme_bw()
+```
+
+```{r, fig.height=9, fig.width=12}
+newdata <- newdata %>% group_by(key) %>% 
+  mutate(Std = (value-mean(value, na.rm = TRUE))/sd(value, na.rm = TRUE)) %>% ungroup()
+
+ggplot(newdata, aes(x = key, y = fct_rev(year), fill = Std)) +
+  geom_tile(color = "white") + 
+  ylab('') + 
+  scale_fill_gradient2(low = "blue", mid = "white", high ="yellow", na.value = "black") + theme_bw()
+```
