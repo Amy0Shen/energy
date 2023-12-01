@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="technical-description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="technical-description"><span class="header-section-number">2.1</span> Technical description</h2>
-<p>The data is collected and distributed by the U.S. Energy Information Administration. The data source is updated on a monthly basis, and the dataset we are using is updated as of November 27th.</p>
+<p>The data is collected and distributed by the U.S. Energy Information Administration. The data source contains data for each month from January 1973 to August 2023, updated on a monthly basis. And the dataset we are currently using has been updated as of November 27th.</p>
 <p>Data source link: <a href="https://www.eia.gov/totalenergy/data/monthly/" class="uri">https://www.eia.gov/totalenergy/data/monthly/</a></p>
 <p>This data source contains multiple data tables, and we will focus on the following data tables:</p>
 <ol type="1">
@@ -237,6 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.3</span> Missing value analysis</h2>
+<p>The three tables Table_1.2, Table_1.3 and Table_10.1 all contain missing power generation and consumption of some new energy sources during the same period. We select Table_10.1 for missing value analysis.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -263,7 +264,8 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openxlsx)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>renewable <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>renewable <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>renewable<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(renewable<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -288,6 +290,8 @@ Attaching package: 'dplyr'</code></pre>
   Total.Biomass.Energy.Consumption Total.Renewable.Energy.Consumption 
                                  0                                  0 </code></pre>
 </div>
+</div>
+<div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowSums</span>(<span class="fu">is.na</span>(<span class="fu">head</span>(renewable))) <span class="sc">%&gt;%</span></span>
@@ -298,6 +302,8 @@ Attaching package: 'dplyr'</code></pre>
 4 4 4 4 4 4 </code></pre>
 </div>
 </div>
+<p>There are missing values in the data of four columns: “Solar.Energy.Consumption”, “Wind.Energy.Consumption”, “Biofuels.Production”, “Biofuels.Consumption”.</p>
+<p>The dataset contains data for each month from January 1973 to August 2023. Since the data set is large, we first perform annual average processing on the data set.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -322,7 +328,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="data_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="1152"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
 <div class="cell">
@@ -337,9 +343,20 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span><span class="st">"yellow"</span>, <span class="at">na.value =</span> <span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1152"></p>
+<p><img src="data_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1152"></p>
 </div>
 </div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(redav)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(renewable_year, <span class="at">percent =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<p>In the above pictures, we can clearly see that in the 1973-1983 interval, some data related to new energy are missing, such as “Solar Energy Consumption”, “Wind Energy Consumption”, “Biofuels Production”, and “Biofuels Consumption”. Among them, solar energy consumption has the most missing data. The lack of data in this part may be related to the level of technological development at that time, when new energy power generation was not popular. The lack of popularization of new energy power generation directly leads to the lack of data on new energy consumption.</p>
 
 
 </section>
