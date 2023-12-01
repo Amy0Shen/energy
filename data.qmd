@@ -2,46 +2,48 @@
 
 ### 2.1 Technical description
 
-The data is collected and distributed by the U.S. Energy Information Administration.
+The data is collected and distributed by the U.S. Energy Information Administration. The data source is updated on a monthly basis, and the dataset we are using is updated as of November 27th.
 
 Data source link: <https://www.eia.gov/totalenergy/data/monthly/>
 
 This data source contains multiple data tables, and we will focus on the following data tables:
 
-1.  Energy Review Category: "Primary energy overview", "Primary energy production by source", "Primary energy consumption by source"
-2.  Renewable Energy Category: "Production and consumption by source"
-3.  Environment Category: "By source"
+1.  Energy Review Category: "Table_1.1_Primary_Energy_Overview", "Table_1.2_Primary_Energy_Production_by_Source", "Table_1.3_Primary_Energy_Consumption_by_Source"
+2.  Renewable Energy Category: "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source"
+3.  Environment Category: "Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source"
 4.  Energy Prices Category
+
+Given that all tables possess a common column 'Month' representing time, we are using 'Month' as the primary key to consolidate all tables.
 
 ### 2.2 Research plan
 
 1.  **Unveiling Energy Trends:**
 
-    Data Source: Utilize "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+    Data Source: Utilize "Table_1.2" and "Table_1.3" from the dataset.
 
     Techniques: Implement histograms or ridgeline plots to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.
 
 2.  **Balancing Production and Consumption:**
 
-    Data Source: Utilize "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+    Data Source: Utilize "Table_1.2" and "Table_1.3" from the dataset.
 
     Techniques: Utilize boxplots or scatterplots to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.
 
 3.  **Price Dynamics and Supply-Demand:**
 
-    Data Source: Utilize "Energy Prices" and "Primary energy overview" from the dataset.
+    Data Source: Utilize "Energy Prices" and "Table_1.1" from the dataset.
 
     Techniques: Employ bar plots, Cleveland dot plots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.
 
 4.  **Renewable Energy's impact on Conventional Sources**
 
-    Data Source: Utilize "Production and consumption by source" of "Renewable Energy", "Primary energy production by source" and "Primary energy consumption by source" from the dataset.
+    Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
 
     Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
 
 5.  **Carbon Emissions and Energy Mix:**
 
-    Data Source: Utilize Carbon dioxide emissions by source" of "Environment".
+    Data Source: Utilize "Table_11.1".
 
     Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
 
@@ -53,7 +55,8 @@ library(tibble)
 library(tidyr)
 library(ggplot2)
 library(forcats)
-renewable <- read.csv("C:/Users/admin/Desktop/renewable.csv")
+library(openxlsx)
+renewable <- read.xlsx("Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx")
 ```
 
 ```{r}
