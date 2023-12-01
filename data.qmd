@@ -8,9 +8,9 @@ Data source link: <https://www.eia.gov/totalenergy/data/monthly/>
 
 This data source contains multiple data tables, and we will focus on the following data tables:
 
-1.  Energy Review Category: "Table_1.1_Primary_Energy_Overview", "Table_1.2_Primary_Energy_Production_by_Source", "Table_1.3_Primary_Energy_Consumption_by_Source"
-2.  Renewable Energy Category: "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source"
-3.  Environment Category: "Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source"
+1.  Energy Review Category: "Table_1.1_Primary_Energy_Overview" (608 rows each for one month, 13 columns with one column of months and 12 columns of energy production and consumption data), "Table_1.2_Primary_Energy_Production_by_Source" (608 rows each for one month, 14 columns with one column of months and 13 columns of energy production data), "Table_1.3_Primary_Energy_Consumption_by_Source" (608 rows each for one month, 13 columns with one column of months and 12 columns of energy consumption data)
+2.  Renewable Energy Category: "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source" (608 rows each for one month, 14 columns with one column of months and 13 columns of renewable energy production and consumption data)
+3.  Environment Category: "Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source" (608 rows each for one month, 15 columns with one column of months and 14 columns of $CO_2$ emission data by different energy source)
 4.  Energy Prices Category
 
 Given that all tables possess a common column 'Month' representing time, we are using 'Month' as the primary key to consolidate all tables.
@@ -91,7 +91,8 @@ ggplot(newdata, aes(x = key, y = fct_rev(year), fill = missing)) +
   ggtitle("Renewable with NAs added") +
   ylab('') + 
   scale_fill_viridis_d() + # discrete scale
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 ```{r, fig.height=9, fig.width=12}
@@ -101,7 +102,9 @@ newdata <- newdata %>% group_by(key) %>%
 ggplot(newdata, aes(x = key, y = fct_rev(year), fill = Std)) +
   geom_tile(color = "white") + 
   ylab('') + 
-  scale_fill_gradient2(low = "blue", mid = "white", high ="yellow", na.value = "black") + theme_bw()
+  scale_fill_gradient2(low = "blue", mid = "white", high ="yellow", na.value = "black") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 ```{r, fig.height=9, fig.width=12}

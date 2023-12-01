@@ -96,6 +96,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -208,9 +210,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Data source link: <a href="https://www.eia.gov/totalenergy/data/monthly/" class="uri">https://www.eia.gov/totalenergy/data/monthly/</a></p>
 <p>This data source contains multiple data tables, and we will focus on the following data tables:</p>
 <ol type="1">
-<li>Energy Review Category: “Table_1.1_Primary_Energy_Overview”, “Table_1.2_Primary_Energy_Production_by_Source”, “Table_1.3_Primary_Energy_Consumption_by_Source”</li>
-<li>Renewable Energy Category: “Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source”</li>
-<li>Environment Category: “Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source”</li>
+<li>Energy Review Category: “Table_1.1_Primary_Energy_Overview” (608 rows each for one month, 13 columns with one column of months and 12 columns of energy production and consumption data), “Table_1.2_Primary_Energy_Production_by_Source” (608 rows each for one month, 14 columns with one column of months and 13 columns of energy production data), “Table_1.3_Primary_Energy_Consumption_by_Source” (608 rows each for one month, 13 columns with one column of months and 12 columns of energy consumption data)</li>
+<li>Renewable Energy Category: “Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source” (608 rows each for one month, 14 columns with one column of months and 13 columns of renewable energy production and consumption data)</li>
+<li>Environment Category: “Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source” (608 rows each for one month, 15 columns with one column of months and 14 columns of <span class="math inline">\(CO_2\)</span> emission data by different energy source)</li>
 <li>Energy Prices Category</li>
 </ol>
 <p>Given that all tables possess a common column ‘Month’ representing time, we are using ‘Month’ as the primary key to consolidate all tables.</p>
@@ -325,7 +327,8 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Renewable with NAs added"</span>) <span class="sc">+</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">''</span>) <span class="sc">+</span> </span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span> <span class="co"># discrete scale</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1152"></p>
@@ -340,7 +343,9 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(newdata, <span class="fu">aes</span>(<span class="at">x =</span> key, <span class="at">y =</span> <span class="fu">fct_rev</span>(year), <span class="at">fill =</span> Std)) <span class="sc">+</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span> </span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">''</span>) <span class="sc">+</span> </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span><span class="st">"yellow"</span>, <span class="at">na.value =</span> <span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span><span class="st">"yellow"</span>, <span class="at">na.value =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="data_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1152"></p>
