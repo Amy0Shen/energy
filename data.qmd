@@ -1,6 +1,6 @@
 # Data
 
-### 2.1 Technical description
+## Technical description
 
 The data is collected and distributed by the U.S. Energy Information Administration. The data source is updated on a monthly basis, and the dataset we are using is updated as of November 27th.
 
@@ -15,7 +15,7 @@ This data source contains multiple data tables, and we will focus on the followi
 
 Given that all tables possess a common column 'Month' representing time, we are using 'Month' as the primary key to consolidate all tables.
 
-### 2.2 Research plan
+## Research plan
 
 1.  **Unveiling Energy Trends:**
 
@@ -47,7 +47,7 @@ Given that all tables possess a common column 'Month' representing time, we are 
 
     Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
 
-### 2.3 Missing value analysis
+## Missing value analysis
 
 ```{r, warning=FALSE}
 library(dplyr)
