@@ -59,6 +59,7 @@ library(ggplot2)
 library(forcats)
 library(openxlsx)
 renewable <- read.xlsx("Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx")
+renewable$Month <-as.Date(renewable$Month, origin = "1899-12-30")
 ```
 
 ```{r}
