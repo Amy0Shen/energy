@@ -353,6 +353,24 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 </div>
 <p>Now we can see that fossil fuel production does not show a decreasing trend as renewable energy production increase. However, the comsumption of both does seem to have a negative correlation.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>consumption <span class="ot">&lt;-</span> yearlyenergy[, <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Total Fossil Fuels Consumption"</span>, <span class="st">"Nuclear Electric Power Consumption"</span>, <span class="st">"Total Renewable Energy Consumption"</span>)]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>consumption <span class="ot">&lt;-</span> consumption <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">names_to =</span> <span class="st">"Type"</span>, <span class="at">values_to =</span> <span class="st">"Consumption"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>consumption_scaled <span class="ot">&lt;-</span> yearlyenergy[, <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Scaled Fossil Fuels Consumption"</span>, <span class="st">"Scaled Renewable Energy Consumption"</span>, <span class="st">"Scaled Nuclear Electric Power Consumption"</span>)]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(consumption_scaled) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Total Fossil Fuels Consumption"</span>, <span class="st">"Nuclear Electric Power Consumption"</span>, <span class="st">"Total Renewable Energy Consumption"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>yearlyconsumption <span class="ot">&lt;-</span> consumption_scaled <span class="sc">|&gt;</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">names_to =</span> <span class="st">"Type"</span>, <span class="at">values_to =</span> <span class="st">"Scaled Consumption"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(consumption, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Year"</span>, <span class="st">"Type"</span>))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>yearlyconsumption_sorted <span class="ot">&lt;-</span> yearlyconsumption <span class="sc">|&gt;</span> </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Total Renewable Energy Consumption"</span>, <span class="st">"Nuclear Electric Power Consumption"</span>, <span class="st">"Total Fossil Fuels Consumption"</span>), Type)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(yearlyconsumption_sorted, <span class="st">"Yearly Consumption.csv"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
 <section id="carbon-emissions-and-energy-mix" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="carbon-emissions-and-energy-mix"><span class="header-section-number">3.2</span> Carbon Emissions and Energy Mix</h2>
@@ -363,39 +381,26 @@ Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to estab
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx"</span>, <span class="at">sep.names =</span> <span class="st">" "</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(carbon<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> <span class="fu">filter</span>(Month <span class="sc">&gt;=</span> <span class="st">'1993-01-01'</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">&lt;</span> <span class="st">'2023-01-01'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx"</span>, <span class="at">sep.names =</span> <span class="st">" "</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(carbon<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> <span class="fu">filter</span>(Month <span class="sc">&gt;=</span> <span class="st">'1993-01-01'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">&lt;</span> <span class="st">'2023-01-01'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(carbon<span class="sc">$</span>Month,<span class="st">"%Y"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>yearlycarbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(carbon<span class="sc">$</span>Month,<span class="st">"%Y"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>yearlycarbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>energycarbon <span class="ot">&lt;-</span> yearlyenergy <span class="sc">|&gt;</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Production</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Production</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(yearlycarbon, Year, <span class="st">`</span><span class="at">Total Energy CO2 Emissions</span><span class="st">`</span>), <span class="at">by =</span> <span class="st">'Year'</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(energycarbon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="results_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>Production for both fossil fuel and renewable energy seem to display a negative correlation with <span class="math inline">\(CO_2\)</span> emissions, but from the plot with year, it looks like this is just due to increasing trend of production and decreasing trend in <span class="math inline">\(CO_2\)</span> emission.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>energycarbon <span class="ot">&lt;-</span> yearlyenergy <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Consumption</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Consumption</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Production</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Production</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(yearlycarbon, Year, <span class="st">`</span><span class="at">Total Energy CO2 Emissions</span><span class="st">`</span>), <span class="at">by =</span> <span class="st">'Year'</span>)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(energycarbon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -403,7 +408,20 @@ Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to estab
 <p><img src="results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>On the other hand, fossil fuel consumption and <span class="math inline">\(CO_2\)</span> emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel comsumption is accompanied by lower <span class="math inline">\(CO_2\)</span> emission.</p>
+<p>Production for both fossil fuel and renewable energy seem to display a negative correlation with <span class="math inline">\(CO_2\)</span> emissions, but from the plot with year, it looks like this is just due to increasing trend of production and decreasing trend in <span class="math inline">\(CO_2\)</span> emission.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>energycarbon <span class="ot">&lt;-</span> yearlyenergy <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Consumption</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Consumption</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(yearlycarbon, Year, <span class="st">`</span><span class="at">Total Energy CO2 Emissions</span><span class="st">`</span>), <span class="at">by =</span> <span class="st">'Year'</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(energycarbon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>On the other hand, fossil fuel consumption and <span class="math inline">\(CO_2\)</span> emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel consumption is accompanied by lower <span class="math inline">\(CO_2\)</span> emission.</p>
 
 
 </section>
