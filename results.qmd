@@ -8,6 +8,12 @@
 
 We have too many data, so we will only consider the most recent 30 years.
 ```{r}
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+library(openxlsx)
 library(GGally)
 library(tidyverse)
 energy <- read.xlsx("Table_1.1_Primary_Energy_Overview.xlsx", sep.names = " ")
@@ -38,10 +44,11 @@ ggparcoord(energy_t, columns = 1:(ncol(energy_t)-1), groupColumn = 'type', scale
 We can see that fossil fuels consumption decreased while the production increased. The consumption and production of renewable energy is increases over the years, but it is hard to say whether it affects that of fossil fuels, as it is only a small amount. In order to see more clearly the relationship, we decide to turn the production and consumption into proportion of total energy production and consumption, and compare the production and consumption separately.
 
 ```{r}
+library(ggalluvial)
 yearlyenergy$`Scaled Fossil Fuels Production` <- yearlyenergy$`Total Fossil Fuels Production` / yearlyenergy$`Total Primary Energy Production`
 yearlyenergy$`Scaled Nuclear Electric Power Production` <- yearlyenergy$`Nuclear Electric Power Production` / yearlyenergy$`Total Primary Energy Production`
 yearlyenergy$`Scaled Renewable Energy Production` <- yearlyenergy$`Total Renewable Energy Production` / yearlyenergy$`Total Primary Energy Production`
-production <- data.frame(t(yearlyenergy[, c("Scaled Fossile Fuels Production", "Scaled Renewable Energy Production", "Scaled Nuclear Electric Power Production")]))
+production <- data.frame(t(yearlyenergy[, c("Scaled Fossil Fuels Production", "Scaled Renewable Energy Production", "Scaled Nuclear Electric Power Production")]))
 colnames(production) <- as.character(yearlyenergy$Year)
 production$Types <- rownames(production)
 production <- production |> 
@@ -60,7 +67,7 @@ ggplot(production,
 yearlyenergy$`Scaled Fossil Fuels Consumption` <- yearlyenergy$`Total Fossil Fuels Consumption` / yearlyenergy$`Total Primary Energy Consumption`
 yearlyenergy$`Scaled Nuclear Electric Power Consumption` <- yearlyenergy$`Nuclear Electric Power Consumption` / yearlyenergy$`Total Primary Energy Consumption`
 yearlyenergy$`Scaled Renewable Energy Consumption` <- yearlyenergy$`Total Renewable Energy Consumption` / yearlyenergy$`Total Primary Energy Consumption`
-consumption <- data.frame(t(yearlyenergy[, c("Scaled Fossile Fuels Consumption", "Scaled Renewable Energy Consumption", "Scaled Nuclear Electric Power Consumption")]))
+consumption <- data.frame(t(yearlyenergy[, c("Scaled Fossil Fuels Consumption", "Scaled Renewable Energy Consumption", "Scaled Nuclear Electric Power Consumption")]))
 colnames(consumption) <- as.character(yearlyenergy$Year)
 consumption$Types <- rownames(consumption)
 consumption <- consumption |> 

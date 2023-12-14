@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -62,6 +96,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -138,7 +174,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#renewable-energys-impact-on-conventional-sources" id="toc-renewable-energys-impact-on-conventional-sources" class="nav-link active" data-scroll-target="#renewable-energys-impact-on-conventional-sources"><span class="header-section-number">3.1</span> Renewable Energy’s impact on Conventional Sources</a></li>
+  <li><a href="#carbon-emissions-and-energy-mix" id="toc-carbon-emissions-and-energy-mix" class="nav-link" data-scroll-target="#carbon-emissions-and-energy-mix"><span class="header-section-number">3.2</span> Carbon Emissions and Energy Mix</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://amy0shen.github.io/energy/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://amy0shen.github.io/energy/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -160,8 +203,210 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="renewable-energys-impact-on-conventional-sources" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="renewable-energys-impact-on-conventional-sources"><span class="header-section-number">3.1</span> Renewable Energy’s impact on Conventional Sources</h2>
+<pre><code>Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
+
+Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.</code></pre>
+<p>We have too many data, so we will only consider the most recent 30 years.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openxlsx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'openxlsx' was built under R version 4.3.2</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'GGally':
+  method from   
+  +.gg   ggplot2</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ lubridate 1.9.2     ✔ readr     2.1.4
+✔ purrr     1.0.2     ✔ stringr   1.5.0</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>energy <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_1.1_Primary_Energy_Overview.xlsx"</span>, <span class="at">sep.names =</span> <span class="st">" "</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>energy<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(energy<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>energy <span class="ot">&lt;-</span> energy <span class="sc">|&gt;</span> <span class="fu">filter</span>(Month <span class="sc">&gt;=</span> <span class="st">'1993-01-01'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">&lt;</span> <span class="st">'2023-01-01'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We are concerned about the trend over years, not the trend within years, so to further reduce the number of data points we have, we will sum up the months to get yearly energy production and consumption.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>energy<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(energy<span class="sc">$</span>Month,<span class="st">"%Y"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>yearlyenergy <span class="ot">&lt;-</span> energy <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We try to draw a parallel coordinate plot with the fossil fuels vs renewable energy consumption and production.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>energy_t <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(yearlyenergy[<span class="sc">-</span><span class="dv">1</span>]))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(energy_t) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(yearlyenergy<span class="sc">$</span>Year)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>energy_t <span class="ot">&lt;-</span> energy_t[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">9</span>, <span class="dv">11</span>), ]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>energy_t<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="fu">word</span>(<span class="fu">rownames</span>(energy_t), <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparcoord</span>(energy_t, <span class="at">columns =</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(energy_t)<span class="sc">-</span><span class="dv">1</span>), <span class="at">groupColumn =</span> <span class="st">'type'</span>, <span class="at">scale =</span> <span class="st">"globalminmax"</span>) <span class="sc">+</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Fossil Fuels vs Renewable Energy Consumption and Production"</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Time"</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Type"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can see that fossil fuels consumption decreased while the production increased. The consumption and production of renewable energy is increases over the years, but it is hard to say whether it affects that of fossil fuels, as it is only a small amount. In order to see more clearly the relationship, we decide to turn the production and consumption into proportion of total energy production and consumption, and compare the production and consumption separately.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggalluvial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggalluvial' was built under R version 4.3.2</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Fossil Fuels Production</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Fossil Fuels Production</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Production</span><span class="st">`</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Nuclear Electric Power Production</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Nuclear Electric Power Production</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Production</span><span class="st">`</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Renewable Energy Production</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Renewable Energy Production</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Production</span><span class="st">`</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>production <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(yearlyenergy[, <span class="fu">c</span>(<span class="st">"Scaled Fossil Fuels Production"</span>, <span class="st">"Scaled Renewable Energy Production"</span>, <span class="st">"Scaled Nuclear Electric Power Production"</span>)]))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(production) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(yearlyenergy<span class="sc">$</span>Year)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>production<span class="sc">$</span>Types <span class="ot">&lt;-</span> <span class="fu">rownames</span>(production)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>production <span class="ot">&lt;-</span> production <span class="sc">|&gt;</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(production)<span class="sc">-</span><span class="dv">1</span>), <span class="at">names_to =</span> <span class="st">"Time"</span>, <span class="at">values_to =</span> <span class="st">"Production"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(production,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(Time), <span class="at">stratum =</span> Types, <span class="at">alluvium =</span> Types, </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Production,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> Types, <span class="at">label =</span> Types))<span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_stratum</span>(<span class="at">alpha =</span> .<span class="dv">5</span>)<span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_alluvium</span>()<span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">stat =</span> <span class="st">"stratum"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Fossil Fuels Consumption</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Fossil Fuels Consumption</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Consumption</span><span class="st">`</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Nuclear Electric Power Consumption</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Nuclear Electric Power Consumption</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Consumption</span><span class="st">`</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Scaled Renewable Energy Consumption</span><span class="st">`</span> <span class="ot">&lt;-</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Renewable Energy Consumption</span><span class="st">`</span> <span class="sc">/</span> yearlyenergy<span class="sc">$</span><span class="st">`</span><span class="at">Total Primary Energy Consumption</span><span class="st">`</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>consumption <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">t</span>(yearlyenergy[, <span class="fu">c</span>(<span class="st">"Scaled Fossil Fuels Consumption"</span>, <span class="st">"Scaled Renewable Energy Consumption"</span>, <span class="st">"Scaled Nuclear Electric Power Consumption"</span>)]))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(consumption) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(yearlyenergy<span class="sc">$</span>Year)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>consumption<span class="sc">$</span>Types <span class="ot">&lt;-</span> <span class="fu">rownames</span>(consumption)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>consumption <span class="ot">&lt;-</span> consumption <span class="sc">|&gt;</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(consumption)<span class="sc">-</span><span class="dv">1</span>), <span class="at">names_to =</span> <span class="st">"Time"</span>, <span class="at">values_to =</span> <span class="st">"Consumption"</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(consumption,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(Time), <span class="at">stratum =</span> Types, <span class="at">alluvium =</span> Types, </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Consumption,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> Types, <span class="at">label =</span> Types))<span class="sc">+</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_stratum</span>(<span class="at">alpha =</span> .<span class="dv">5</span>)<span class="sc">+</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_alluvium</span>()<span class="sc">+</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">stat =</span> <span class="st">"stratum"</span>, <span class="at">size =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now we can see that fossil fuel production does not show a decreasing trend as renewable energy production increase. However, the comsumption of both does seem to have a negative correlation.</p>
+</section>
+<section id="carbon-emissions-and-energy-mix" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="carbon-emissions-and-energy-mix"><span class="header-section-number">3.2</span> Carbon Emissions and Energy Mix</h2>
+<pre><code>Data Source: Utilize "Table_11.1".
+
+Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.</code></pre>
+<p>Again, we are only concerned with the most recent 30 years, and we consider the yearly total.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx"</span>, <span class="at">sep.names =</span> <span class="st">" "</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(carbon<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>carbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> <span class="fu">filter</span>(Month <span class="sc">&gt;=</span> <span class="st">'1993-01-01'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month <span class="sc">&lt;</span> <span class="st">'2023-01-01'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>carbon<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">format</span>(carbon<span class="sc">$</span>Month,<span class="st">"%Y"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>yearlycarbon <span class="ot">&lt;-</span> carbon <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>energycarbon <span class="ot">&lt;-</span> yearlyenergy <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Production</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Production</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(yearlycarbon, Year, <span class="st">`</span><span class="at">Total Energy CO2 Emissions</span><span class="st">`</span>), <span class="at">by =</span> <span class="st">'Year'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(energycarbon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Production for both fossil fuel and renewable energy seem to display a negative correlation with <span class="math inline">\(CO_2\)</span> emissions, but from the plot with year, it looks like this is just due to increasing trend of production and decreasing trend in <span class="math inline">\(CO_2\)</span> emission.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>energycarbon <span class="ot">&lt;-</span> yearlyenergy <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Year, <span class="st">`</span><span class="at">Total Fossil Fuels Consumption</span><span class="st">`</span>, <span class="st">`</span><span class="at">Total Renewable Energy Consumption</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(yearlycarbon, Year, <span class="st">`</span><span class="at">Total Energy CO2 Emissions</span><span class="st">`</span>), <span class="at">by =</span> <span class="st">'Year'</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(energycarbon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>On the other hand, fossil fuel consumption and <span class="math inline">\(CO_2\)</span> emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel comsumption is accompanied by lower <span class="math inline">\(CO_2\)</span> emission.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -417,7 +662,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://amy0shen.github.io/energy/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://amy0shen.github.io/energy/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
