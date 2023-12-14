@@ -124,7 +124,7 @@ energycarbon <- yearlyenergy |>
   left_join(select(yearlycarbon, Year, `Total Energy CO2 Emissions`), by = 'Year')
 plot(energycarbon)
 ```
-On the other hand, fossil fuel consumption and $CO_2$ emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel comsumption is accompanied by lower $CO_2$ emission.
+On the other hand, fossil fuel consumption and $CO_2$ emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel consumption is accompanied by lower $CO_2$ emission.
 
 
     
