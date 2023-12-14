@@ -1,6 +1,14 @@
 # Results
 
+The data range of all data tables we use is from 1973.1 to 2023.8. However, due to the existence of missing values in early data and the large amount of total data, we mainly consider the data of the past thirty years, that is, the data from 1993 to 2023.
+
 ### 3.1 **Unveiling Energy Trends**
+
+```         
+Data Source: Utilize "Table_1.2" and "Table_1.3".
+
+Techniques: Implement stacked histograms and time series analysis to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.
+```
 
 ```{r, warning=FALSE}
 library(dplyr)
@@ -99,6 +107,12 @@ The results from the graph indicate that in comparison to other months, Fossil f
 
 ### 3.2 B**alancing Production and Consumption**
 
+```         
+Data Source: Utilize "Table_1.1".
+
+Techniques: Utilize scatterplot and stacked histogram combined with a line chart to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.
+```
+
 Our second inquiry aims to investigate the relationship between energy production and consumption. In theory, energy production should exceed or at least match energy consumption. We selected Table_1.1, which contains data on energy production, consumption, and related factors.
 
 ```{r}
@@ -176,6 +190,12 @@ combined_plot
 This analysis revealed that total production exceeds or matches consumption. Additionally, our observation indicated that over the past thirty years, the United States primarily relied on domestic energy production. Furthermore, the net energy import quantity in the US has shown a declining trend since the late twentieth century. In recent years, the net import quantity has turned negative, indicating that energy exports exceed energy imports.
 
 ### 3.3 **Price Dynamics and Supply-Demand**
+
+```         
+Data Source: Utilize "Table_9.1", "Table_9.10" and "Table_1.1".
+
+Techniques: Employ boxplots, scatterplots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.
+```
 
 Our third inquiry focuses on investigating the correlation between energy prices and supply-demand dynamics. Primarily, we examine the price fluctuations of crude oil and natural gas.
 
@@ -271,14 +291,13 @@ ggplot(gas_price_y_melted, aes(x = Year, y = Gas_Price, color = Price_Type, grou
   labs(x = "Year", y = "Gas Price", title = "Gas Price Trends Over Years")
 ```
 
-From the graphs, it's evident that different types of oil prices are close to each other and follow similar trends. There was a significant surge from 1993 to 2008, followed by fluctuations after 2008. 
+From the graphs, it's evident that different types of oil prices are close to each other and follow similar trends. There was a significant surge from 1993 to 2008, followed by fluctuations after 2008.
 
 As for gas prices, various types exhibit similar changing patterns, witnessing a substantial increase from 1993 to 2008. However, there's a noticeable difference in the values of different prices. Among these, the price of gas delivered to residential users is the highest. Possible reasons for this include:
 
-1. Residential users typically have a stable and indispensable demand for natural gas, particularly for heating and cooking. This relatively fixed demand allows natural gas suppliers to set relatively higher prices. 
-2. Supplying natural gas to residential areas may involve more pipelines and infrastructure, with additional logistics and investment costs that might be factored into user prices. 
-3. Providing natural gas services to residential users might require more service support and guarantees, such as ensuring continuous supply and handling emergency situations. These additional services might contribute to the increased prices.
-
+1.  Residential users typically have a stable and indispensable demand for natural gas, particularly for heating and cooking. This relatively fixed demand allows natural gas suppliers to set relatively higher prices.
+2.  Supplying natural gas to residential areas may involve more pipelines and infrastructure, with additional logistics and investment costs that might be factored into user prices.
+3.  Providing natural gas services to residential users might require more service support and guarantees, such as ensuring continuous supply and handling emergency situations. These additional services might contribute to the increased prices.
 
 Next, we aim to investigate whether the prices of oil and gas, being primary energy sources, are influenced by the supply and demand of energy.
 
@@ -301,8 +320,8 @@ corr.price.vs.supply.demand <- price.vs.supply.demand %>%
 
 plot(corr.price.vs.supply.demand)
 ```
-From the graph, it's evident that there's an unmistakable linear relationship between supply and consumption. The prices of oil and gas show a proportional correlation with the supply and demand of energy.
 
+From the graph, it's evident that there's an unmistakable linear relationship between supply and consumption. The prices of oil and gas show a proportional correlation with the supply and demand of energy.
 
 ```{r}
 total_pro_consp <- subset(total_m, select = c(1, 5, 8, 9, 13), Month >= '1993-01-01')
@@ -337,8 +356,128 @@ ggplot(total_price_pro_consp, aes(Consumption, `Natural.Gas.Price,.Citygate`)) +
   geom_hex() +
   ggtitle("Energy Demand vs Gas Price")
 ```
+
 Creating a heatmap depicting the relationship between monthly energy supply and demand along with oil and gas prices, we observe that the energy supply and demand are concentrated around the 7th and 8th months, coinciding with gas prices concentrated between 2.5 and 6.
 
 In contrast, the heatmap depicting the relationship between oil price and supply and demand doesn't show a clear trend. This might be due to significant fluctuations in oil prices over the last thirty years. There are likely other factors that exert a more significant influence on oil prices, such as political factors, resulting in the lack of a distinct trend in the heatmap.
 
+### 3.4 Renewable Energy's impact on Conventional Sources
 
+```         
+Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
+
+Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
+```
+
+```{r, warning=FALSE}
+library(GGally)
+library(tidyverse)
+energy <- read.xlsx("Table_1.1_Primary_Energy_Overview.xlsx", sep.names = " ")
+energy$Month <-as.Date(energy$Month, origin = "1899-12-30")
+energy <- energy |> filter(Month >= '1993-01-01') |> 
+  filter(Month < '2023-01-01')
+```
+
+We are concerned about the trend over years, not the trend within years, so to further reduce the number of data points we have, we will sum up the months to get yearly energy production and consumption.
+
+```{r}
+energy$Year <- format(energy$Month,"%Y")
+yearlyenergy <- energy |> 
+  group_by(Year) |> 
+  summarise(across(where(is.numeric), sum))
+```
+
+We try to draw a parallel coordinate plot with the fossil fuels vs renewable energy consumption and production.
+
+```{r, fig.width=12}
+energy_t <- data.frame(t(yearlyenergy[-1]))
+colnames(energy_t) <- as.character(yearlyenergy$Year)
+energy_t <- energy_t[c(1, 3, 9, 11), ]
+energy_t$type <- word(rownames(energy_t), -1)
+ggparcoord(energy_t, columns = 1:(ncol(energy_t)-1), groupColumn = 'type', scale = "globalminmax") + 
+  labs(title = "Fossil Fuels vs Renewable Energy Consumption and Production") +
+  xlab("Time") +
+  ylab("Type")
+```
+
+We can see that fossil fuels consumption decreased while the production increased. The consumption and production of renewable energy is increases over the years, but it is hard to say whether it affects that of fossil fuels, as it is only a small amount. In order to see more clearly the relationship, we decide to turn the production and consumption into proportion of total energy production and consumption, and compare the production and consumption separately.
+
+```{r}
+yearlyenergy$`Scaled Fossil Fuels Production` <- yearlyenergy$`Total Fossil Fuels Production` / yearlyenergy$`Total Primary Energy Production`
+yearlyenergy$`Scaled Nuclear Electric Power Production` <- yearlyenergy$`Nuclear Electric Power Production` / yearlyenergy$`Total Primary Energy Production`
+yearlyenergy$`Scaled Renewable Energy Production` <- yearlyenergy$`Total Renewable Energy Production` / yearlyenergy$`Total Primary Energy Production`
+production <- data.frame(t(yearlyenergy[, c("Scaled Fossil Fuels Production", "Scaled Renewable Energy Production", "Scaled Nuclear Electric Power Production")]))
+colnames(production) <- as.character(yearlyenergy$Year)
+production$Types <- rownames(production)
+production <- production |> 
+  pivot_longer(cols = 1:(ncol(production)-1), names_to = "Time", values_to = "Production")
+ggplot(production,
+       aes(x = as.factor(Time), stratum = Types, alluvium = Types, 
+           y = Production,
+           fill = Types, label = Types))+
+  geom_stratum(alpha = .5)+
+  geom_alluvium()+
+  geom_text(stat = "stratum", size = 3)
+```
+
+```{r}
+yearlyenergy$`Scaled Fossil Fuels Consumption` <- yearlyenergy$`Total Fossil Fuels Consumption` / yearlyenergy$`Total Primary Energy Consumption`
+yearlyenergy$`Scaled Nuclear Electric Power Consumption` <- yearlyenergy$`Nuclear Electric Power Consumption` / yearlyenergy$`Total Primary Energy Consumption`
+yearlyenergy$`Scaled Renewable Energy Consumption` <- yearlyenergy$`Total Renewable Energy Consumption` / yearlyenergy$`Total Primary Energy Consumption`
+consumption <- data.frame(t(yearlyenergy[, c("Scaled Fossil Fuels Consumption", "Scaled Renewable Energy Consumption", "Scaled Nuclear Electric Power Consumption")]))
+colnames(consumption) <- as.character(yearlyenergy$Year)
+consumption$Types <- rownames(consumption)
+consumption <- consumption |> 
+  pivot_longer(cols = 1:(ncol(consumption)-1), names_to = "Time", values_to = "Consumption")
+ggplot(consumption,
+       aes(x = as.factor(Time), stratum = Types, alluvium = Types, 
+           y = Consumption,
+           fill = Types, label = Types))+
+  geom_stratum(alpha = .5)+
+  geom_alluvium()+
+  geom_text(stat = "stratum", size = 3)
+```
+
+Now we can see that fossil fuel production does not show a decreasing trend as renewable energy production increase. However, the consumption of both does seem to have a negative correlation.
+
+### 3.5 Carbon Emissions and Energy Mix
+
+```         
+Data Source: Utilize "Table_11.1".
+
+Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
+```
+
+Again, we are only concerned with the most recent 30 years, and we consider the yearly total.
+
+```{r}
+carbon <- read.xlsx("Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx", sep.names = " ")
+carbon$Month <-as.Date(carbon$Month, origin = "1899-12-30")
+carbon <- carbon |> filter(Month >= '1993-01-01') |> 
+  filter(Month < '2023-01-01')
+```
+
+```{r}
+carbon$Year <- format(carbon$Month,"%Y")
+yearlycarbon <- carbon |> 
+  group_by(Year) |> 
+  summarise(across(where(is.numeric), sum))
+```
+
+```{r}
+energycarbon <- yearlyenergy |> 
+  select(Year, `Total Fossil Fuels Production`, `Total Renewable Energy Production`) |> 
+  left_join(select(yearlycarbon, Year, `Total Energy CO2 Emissions`), by = 'Year')
+plot(energycarbon)
+```
+
+Production for both fossil fuel and renewable energy seem to display a negative correlation with $CO_2$ emissions, but from the plot with year, it looks like this is just due to increasing trend of production and decreasing trend in $CO_2$ emission.
+
+```{r}
+energycarbon <- yearlyenergy |> 
+  select(Year, `Total Fossil Fuels Consumption`, `Total Renewable Energy Consumption`) |> 
+  left_join(select(yearlycarbon, Year, `Total Energy CO2 Emissions`), by = 'Year')
+plot(energycarbon)
+```
+
+On the other hand, fossil fuel consumption and $CO_2$ emission shows the exact same trend over time, and they have very high correlation. This shows that lower fossil fuel consumption is accompanied by lower $CO_2$ emission.

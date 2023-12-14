@@ -1,39 +1,46 @@
 # Data
 
-### 2.1 Technical description
+## Technical description
 
-The data is collected and distributed by the U.S. Energy Information Administration. The data source is updated on a monthly basis, and the dataset we are using is updated as of November 27th.
+The data is collected and distributed by the U.S. Energy Information Administration. The data source contains data for each month from January 1973 to August 2023, updated on a monthly basis. And the dataset we are currently using has been updated as of November 27th.
 
 Data source link: <https://www.eia.gov/totalenergy/data/monthly/>
 
 This data source contains multiple data tables, and we will focus on the following data tables:
 
-1.  Energy Review Category: "Table_1.1_Primary_Energy_Overview", "Table_1.2_Primary_Energy_Production_by_Source", "Table_1.3_Primary_Energy_Consumption_by_Source"
-2.  Renewable Energy Category: "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source"
-3.  Environment Category: "Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source"
-4.  Energy Prices Category
+1.  Energy Review Category: "Table_1.1_Primary_Energy_Overview" (608 rows each for one month, 13 columns with one column of months and 12 columns of energy production and consumption data), "Table_1.2_Primary_Energy_Production_by_Source" (608 rows each for one month, 14 columns with one column of months and 13 columns of energy production data), "Table_1.3_Primary_Energy_Consumption_by_Source" (608 rows each for one month, 13 columns with one column of months and 12 columns of energy consumption data)
+
+2.  Energy Prices Category
+
+    "Table_9.1_Crude_Oil_Price_Summary" (608 rows each for one month, 7 columns with one column of months and 6 columns of different kinds of oil prices),
+
+    "Table_9.10_Natural_Gas_Prices" (572 rows each for one month, 8 columns with one column of months and 7 columns of different kinds of gas prices)
+
+3.  Renewable Energy Category: "Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source" (608 rows each for one month, 14 columns with one column of months and 13 columns of renewable energy production and consumption data)
+
+4.  Environment Category: "Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source" (608 rows each for one month, 15 columns with one column of months and 14 columns of $CO_2$ emission data by different energy source)
 
 Given that all tables possess a common column 'Month' representing time, we are using 'Month' as the primary key to consolidate all tables.
 
-### 2.2 Research plan
+## Research plan
 
 1.  **Unveiling Energy Trends:**
 
     Data Source: Utilize "Table_1.2" and "Table_1.3" from the dataset.
 
-    Techniques: Implement histograms or ridgeline plots to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.
+    Techniques: Implement stacked histograms and time series analysis to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.
 
 2.  **Balancing Production and Consumption:**
 
     Data Source: Utilize "Table_1.2" and "Table_1.3" from the dataset.
 
-    Techniques: Utilize boxplots or scatterplots to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.
+    Techniques: Utilize scatterplot and stacked histogram combined with a line chart to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.
 
 3.  **Price Dynamics and Supply-Demand:**
 
-    Data Source: Utilize "Energy Prices" and "Table_1.1" from the dataset.
+    Data Source: Utilize "Table_9.1", "Table_9.10" and "Table_1.1" from the dataset.
 
-    Techniques: Employ bar plots, Cleveland dot plots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.
+    Techniques: Employ boxplots, scatterplots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.
 
 4.  **Renewable Energy's impact on Conventional Sources**
 
@@ -47,7 +54,9 @@ Given that all tables possess a common column 'Month' representing time, we are 
 
     Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
 
-### 2.3 Missing value analysis
+## Missing value analysis
+
+The three tables Table_1.2, Table_1.3 and Table_10.1 all contain missing power generation and consumption of some new energy sources during the same period. We select Table_10.1 for missing value analysis.
 
 ```{r, warning=FALSE}
 library(dplyr)
@@ -57,14 +66,22 @@ library(ggplot2)
 library(forcats)
 library(openxlsx)
 renewable <- read.xlsx("Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx")
+renewable$Month <-as.Date(renewable$Month, origin = "1899-12-30")
 ```
 
 ```{r}
 colSums(is.na(renewable)) %>%
   sort(decreasing = TRUE)
+```
+
+```{r}
 rowSums(is.na(head(renewable))) %>%
   sort(decreasing = TRUE)
 ```
+
+There are missing values in the data of four columns: "Solar.Energy.Consumption", "Wind.Energy.Consumption", "Biofuels.Production", "Biofuels.Consumption".
+
+The dataset contains data for each month from January 1973 to August 2023. Since the data set is large, we first perform annual average processing on the data set.
 
 ```{r}
 renewable$year <- substr(renewable$Month, 1, 4)
@@ -83,7 +100,8 @@ ggplot(newdata, aes(x = key, y = fct_rev(year), fill = missing)) +
   ggtitle("Renewable with NAs added") +
   ylab('') + 
   scale_fill_viridis_d() + # discrete scale
-  theme_bw()
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 ```{r, fig.height=9, fig.width=12}
@@ -93,5 +111,14 @@ newdata <- newdata %>% group_by(key) %>%
 ggplot(newdata, aes(x = key, y = fct_rev(year), fill = Std)) +
   geom_tile(color = "white") + 
   ylab('') + 
-  scale_fill_gradient2(low = "blue", mid = "white", high ="yellow", na.value = "black") + theme_bw()
+  scale_fill_gradient2(low = "blue", mid = "white", high ="yellow", na.value = "black") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
+
+```{r, fig.height=9, fig.width=12}
+library(redav)
+plot_missing(renewable_year, percent = FALSE)
+```
+
+In the above pictures, we can clearly see that in the 1973-1983 interval, some data related to new energy are missing, such as "Solar Energy Consumption", "Wind Energy Consumption", "Biofuels Production", and "Biofuels Consumption". Among them, solar energy consumption has the most missing data. The lack of data in this part may be related to the level of technological development at that time, when new energy power generation was not popular. The lack of popularization of new energy power generation directly leads to the lack of data on new energy consumption.
