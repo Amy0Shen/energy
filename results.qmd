@@ -84,6 +84,21 @@ ggplot(consumption,
 Now we can see that fossil fuel production does not show a decreasing trend as renewable energy production increase. However, the comsumption of both does seem to have a negative correlation.
 
 
+```{r}
+consumption <- yearlyenergy[, c("Year", "Total Fossil Fuels Consumption", "Nuclear Electric Power Consumption", "Total Renewable Energy Consumption")]
+consumption <- consumption |> 
+  pivot_longer(cols = 2:4, names_to = "Type", values_to = "Consumption")
+
+consumption_scaled <- yearlyenergy[, c("Year", "Scaled Fossil Fuels Consumption", "Scaled Renewable Energy Consumption", "Scaled Nuclear Electric Power Consumption")]
+colnames(consumption_scaled) <- c("Year", "Total Fossil Fuels Consumption", "Nuclear Electric Power Consumption", "Total Renewable Energy Consumption")
+yearlyconsumption <- consumption_scaled |> 
+  pivot_longer(cols = 2:4, names_to = "Type", values_to = "Scaled Consumption") |> 
+  right_join(consumption, by = c("Year", "Type"))
+
+yearlyconsumption_sorted <- yearlyconsumption |> 
+  arrange(Type %in% c("Total Renewable Energy Consumption", "Nuclear Electric Power Consumption", "Total Fossil Fuels Consumption"), Type)
+write.csv(yearlyconsumption_sorted, "Yearly Consumption.csv", row.names=FALSE)
+```
 
 
 
