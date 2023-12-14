@@ -372,6 +372,7 @@ Techniques: Utilize biplots and parallel coordinate plots to compare the increas
 ```{r, warning=FALSE}
 library(GGally)
 library(tidyverse)
+library(ggalluvial)
 energy <- read.xlsx("Table_1.1_Primary_Energy_Overview.xlsx", sep.names = " ")
 energy$Month <-as.Date(energy$Month, origin = "1899-12-30")
 energy <- energy |> filter(Month >= '1993-01-01') |> 
