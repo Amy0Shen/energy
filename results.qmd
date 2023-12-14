@@ -1,1 +1,121 @@
 # Results
+
+## Renewable Energy's impact on Conventional Sources
+
+    Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
+
+    Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
+    
+```{r}
+library(GGally)
+library(tidyverse)
+energy <- read.xlsx("Table_1.1_Primary_Energy_Overview.xlsx", sep.names = " ")
+energy$Month <-as.Date(energy$Month, origin = "1899-12-30")
+```
+
+```{r}
+energy_t <- data.frame(t(energy[-1]))
+colnames(energy_t) <- as.character(energy$Month)
+energy_t <- energy_t[c(1, 3, 9, 11), ]
+energy_t$type <- word(rownames(energy_t), -1)
+ggparcoord(energy_t, columns = 1:(ncol(energy_t)-1), groupColumn = 'type') + 
+  labs(title = "Fossil Fuels vs Renewable Energy Comsumption and Production") +
+  xlab("Time") +
+  ylab("Type")
+```
+
+```{r}
+library(ggalluvial)
+production <- data.frame(t(energy[, c("Total Fossil Fuels Production", "Total Renewable Energy Production")]))
+colnames(production) <- as.character(energy$Month)
+production$Types <- rownames(production)
+production <- production |> 
+  pivot_longer(cols = 1:(ncol(production)-1), names_to = "Time", values_to = "Production")
+ggplot(production,
+       aes(x = as.factor(Time), stratum = Types, alluvium = Types, 
+           y = Production,
+           fill = Types, label = Types))+
+  geom_stratum(alpha = .5)+
+  geom_alluvium()+
+  geom_text(stat = "stratum", size = 3)
+```
+```{r}
+energy$Year <- format(energy$Month,"%Y")
+yearlyenergy <- energy |> 
+  group_by(Year) |> 
+  summarise(across(where(is.numeric), sum))
+production <- data.frame(t(yearlyenergy[, c("Total Fossil Fuels Production", "Total Renewable Energy Production")]))
+colnames(production) <- as.character(yearlyenergy$Year)
+production$Types <- rownames(production)
+production <- production |> 
+  pivot_longer(cols = 1:(ncol(production)-1), names_to = "Time", values_to = "Production")
+ggplot(production,
+       aes(x = as.factor(Time), stratum = Types, alluvium = Types, 
+           y = Production,
+           fill = Types, label = Types))+
+  geom_stratum(alpha = .5)+
+  geom_alluvium()+
+  geom_text(stat = "stratum", size = 3)
+```
+
+```{r}
+consumption <- data.frame(t(energy[, c("Total Fossil Fuels Consumption", "Total Renewable Energy Consumption")]))
+colnames(consumption) <- as.character(energy$Year)
+consumption$Types <- rownames(consumption)
+consumption <- consumption |> 
+  pivot_longer(cols = 1:(ncol(consumption)-1), names_to = "Time", values_to = "Consumption")
+ggplot(consumption,
+       aes(x = as.factor(Time), stratum = Types, alluvium = Types, 
+           y = Consumption,
+           fill = Types, label = Types))+
+  geom_stratum(alpha = .5)+
+  geom_alluvium()+
+  geom_text(stat = "stratum", size = 3)
+```
+
+
+
+
+
+
+
+## Carbon Emissions and Energy Mix
+
+    Data Source: Utilize "Table_11.1".
+
+    Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
+    
+```{r}
+carbon <- read.xlsx("Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source.xlsx", sep.names = " ")
+carbon$Month <-as.Date(carbon$Month, origin = "1899-12-30")
+```
+
+```{r}
+carbon$Year <- format(carbon$Month,"%Y")
+yearlycarbon <- carbon |> 
+  group_by(Year) |> 
+  summarise(across(where(is.numeric), sum))
+```
+
+```{r}
+energycarbon <- yearlyenergy |> 
+  select(Year, `Total Fossil Fuels Production`, `Total Renewable Energy Production`) |> 
+  left_join(select(yearlycarbon, Year, `Total Energy CO2 Emissions`), by = 'Year')
+```
+
+```{r}
+plot(energycarbon[, 2:4])
+```
+
+```{r}
+energycarbon <- yearlyenergy |> 
+  select(Year, `Total Fossil Fuels Consumption`, `Total Renewable Energy Consumption`) |> 
+  left_join(select(yearlycarbon, Year, `Total Energy CO2 Emissions`), by = 'Year')
+```
+
+```{r}
+plot(energycarbon[, 2:4])
+```
+
+
+    
