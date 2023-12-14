@@ -46,13 +46,13 @@ Given that all tables possess a common column 'Month' representing time, we are 
 
     Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
 
-    Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
+    Techniques: Utilize parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.
 
 5.  **Carbon Emissions and Energy Mix:**
 
     Data Source: Utilize "Table_11.1".
 
-    Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
+    Techniques: Implement scatterplots and stacked area plot to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.
 
 ## Missing value analysis
 
