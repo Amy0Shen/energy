@@ -1,91 +1,91 @@
 "Year","Type","Scaled Consumption","Consumption"
-"1993","Nuclear Electric Power Consumption",0.0470350357629155,6.410498
-"1994","Nuclear Electric Power Consumption",0.0465971400556589,6.693877
-"1995","Nuclear Electric Power Consumption",0.0484569504013803,7.075435
-"1996","Nuclear Electric Power Consumption",0.0490290647884492,7.086675
-"1997","Nuclear Electric Power Consumption",0.0485373679141768,6.596992
-"1998","Nuclear Electric Power Consumption",0.0450602300323285,7.067811
-"1999","Nuclear Electric Power Consumption",0.0445784614629694,7.610254
-"2000","Nuclear Electric Power Consumption",0.0423558843330931,7.862352
-"2001","Nuclear Electric Power Consumption",0.0371966369623243,8.028853
-"2002","Nuclear Electric Power Consumption",0.0394050626083993,8.145428
-"2003","Nuclear Electric Power Consumption",0.0408727804572005,7.959622
-"2004","Nuclear Electric Power Consumption",0.0418789583350101,8.222774
-"2005","Nuclear Electric Power Consumption",0.0431484625277175,8.160811
-"2006","Nuclear Electric Power Consumption",0.0460767581662823,8.214627
-"2007","Nuclear Electric Power Consumption",0.0464290886021623,8.458591
-"2008","Nuclear Electric Power Consumption",0.0524353395595555,8.426492
-"2009","Nuclear Electric Power Consumption",0.0577622320931249,8.35522
-"2010","Nuclear Electric Power Consumption",0.061967333266724,8.434434
-"2011","Nuclear Electric Power Consumption",0.0671309536097343,8.268699
-"2012","Nuclear Electric Power Consumption",0.0670868847250263,8.061821
-"2013","Nuclear Electric Power Consumption",0.0698864002519511,8.244432
-"2014","Nuclear Electric Power Consumption",0.0713173072345084,8.337559
-"2015","Nuclear Electric Power Consumption",0.0722819043101686,8.336886
-"2016","Nuclear Electric Power Consumption",0.0756673480359385,8.426753
-"2017","Nuclear Electric Power Consumption",0.0786299197466168,8.418968
-"2018","Nuclear Electric Power Consumption",0.0773529962830393,8.438068
-"2019","Nuclear Electric Power Consumption",0.0786082358971896,8.451852
-"2020","Nuclear Electric Power Consumption",0.0821645597491822,8.251074
-"2021","Nuclear Electric Power Consumption",0.0818767599803532,8.130914
-"2022","Nuclear Electric Power Consumption",0.085354934219955,8.06102
-"1993","Total Fossil Fuels Consumption",0.876603712161361,74.680131
-"1994","Total Fossil Fuels Consumption",0.87475251815939,76.150585
-"1995","Total Fossil Fuels Consumption",0.870237620735443,77.163345
-"1996","Total Fossil Fuels Consumption",0.871939999408785,79.699646
-"1997","Total Fossil Fuels Consumption",0.878459451193894,80.780971
-"1998","Total Fossil Fuels Consumption",0.877663079086778,81.273991
-"1999","Total Fossil Fuels Consumption",0.873611767787356,82.323035
-"2000","Total Fossil Fuels Consumption",0.875141832712997,84.621752
-"2001","Total Fossil Fuels Consumption",0.876970150085082,82.799762
-"2002","Total Fossil Fuels Consumption",0.874620722364486,83.592256
-"2003","Total Fossil Fuels Consumption",0.875818361758527,83.909091
-"2004","Total Fossil Fuels Consumption",0.873849839537473,85.666269
-"2005","Total Fossil Fuels Consumption",0.872801849173223,85.622667
-"2006","Total Fossil Fuels Consumption",0.868794638273253,84.477198
-"2007","Total Fossil Fuels Consumption",0.867023018505521,85.805031
-"2008","Total Fossil Fuels Consumption",0.859217365330775,83.040547
-"2009","Total Fossil Fuels Consumption",0.849781866428319,77.862477
-"2010","Total Fossil Fuels Consumption",0.848449891733188,80.723055
-"2011","Total Fossil Fuels Consumption",0.843520154356354,79.262602
-"2012","Total Fossil Fuels Consumption",0.84321725886346,77.303901
-"2013","Total Fossil Fuels Consumption",0.840547326975693,79.224277
-"2014","Total Fossil Fuels Consumption",0.839322773692022,80.016725
-"2015","Total Fossil Fuels Consumption",0.837074687641247,79.090287
-"2016","Total Fossil Fuels Consumption",0.832362849303602,78.319014
-"2017","Total Fossil Fuels Consumption",0.829666628758234,77.907116
-"2018","Total Fossil Fuels Consumption",0.834460922633729,81.280541
-"2019","Total Fossil Fuels Consumption",0.832522558202896,80.424543
-"2020","Total Fossil Fuels Consumption",0.823155810002017,73.139366
-"2021","Total Fossil Fuels Consumption",0.82959722235715,77.453605
-"2022","Total Fossil Fuels Consumption",0.828121335181518,78.498182
-"1993","Total Renewable Energy Consumption",0.0752471409510915,4.007036
-"1994","Total Renewable Energy Consumption",0.0768935099053963,4.056461
-"1995","Total Renewable Energy Consumption",0.0797957854220586,4.296643
-"1996","Total Renewable Energy Consumption",0.0775305249826361,4.4815
-"1997","Total Renewable Energy Consumption",0.0717395433616478,4.463377
-"1998","Total Renewable Energy Consumption",0.076324008312369,4.1727
-"1999","Total Renewable Energy Consumption",0.0807599895976965,4.200761
-"2000","Total Renewable Energy Consumption",0.0813109274635994,4.095598
-"2001","Total Renewable Energy Consumption",0.0850372543392221,3.511947
-"2002","Total Renewable Energy Consumption",0.0852251208691857,3.766156
-"2003","Total Renewable Energy Consumption",0.0830801885371054,3.915878
-"2004","Total Renewable Energy Consumption",0.0838774680434945,4.105527
-"2005","Total Renewable Energy Consumption",0.0831879125133206,4.232904
-"2006","Total Renewable Energy Consumption",0.0844822515658568,4.480271
-"2007","Total Renewable Energy Consumption",0.085470432393686,4.59486
-"2008","Total Renewable Energy Consumption",0.0871885905956382,5.067704
-"2009","Total Renewable Energy Consumption",0.0911878830417792,5.292547
-"2010","Total Renewable Energy Consumption",0.0886511866297766,5.895684
-"2011","Total Renewable Energy Consumption",0.0879962817370824,6.308058
-"2012","Total Renewable Energy Consumption",0.0879369154354562,6.150346
-"2013","Total Renewable Energy Consumption",0.0874711078781175,6.587017
-"2014","Total Renewable Energy Consumption",0.0874555056546101,6.799026
-"2015","Total Renewable Energy Consumption",0.0882358189489272,6.829494
-"2016","Total Renewable Energy Consumption",0.0895582793912303,7.119722
-"2017","Total Renewable Energy Consumption",0.0896572374490599,7.383484
-"2018","Total Renewable Energy Consumption",0.0866288280306371,7.534557
-"2019","Total Renewable Energy Consumption",0.0874901763332652,7.593826
-"2020","Total Renewable Energy Consumption",0.0928627068199714,7.300518
-"2021","Total Renewable Energy Consumption",0.0870893442548589,7.644252
-"2022","Total Renewable Energy Consumption",0.0850402197254061,8.090852
+"1993","Nuclear Electric Power Consumption","0.047035"," 6.4105"
+"1994","Nuclear Electric Power Consumption","0.046597"," 6.6939"
+"1995","Nuclear Electric Power Consumption","0.048457"," 7.0754"
+"1996","Nuclear Electric Power Consumption","0.049029"," 7.0867"
+"1997","Nuclear Electric Power Consumption","0.048537"," 6.5970"
+"1998","Nuclear Electric Power Consumption","0.045060"," 7.0678"
+"1999","Nuclear Electric Power Consumption","0.044578"," 7.6103"
+"2000","Nuclear Electric Power Consumption","0.042356"," 7.8624"
+"2001","Nuclear Electric Power Consumption","0.037197"," 8.0289"
+"2002","Nuclear Electric Power Consumption","0.039405"," 8.1454"
+"2003","Nuclear Electric Power Consumption","0.040873"," 7.9596"
+"2004","Nuclear Electric Power Consumption","0.041879"," 8.2228"
+"2005","Nuclear Electric Power Consumption","0.043148"," 8.1608"
+"2006","Nuclear Electric Power Consumption","0.046077"," 8.2146"
+"2007","Nuclear Electric Power Consumption","0.046429"," 8.4586"
+"2008","Nuclear Electric Power Consumption","0.052435"," 8.4265"
+"2009","Nuclear Electric Power Consumption","0.057762"," 8.3552"
+"2010","Nuclear Electric Power Consumption","0.061967"," 8.4344"
+"2011","Nuclear Electric Power Consumption","0.067131"," 8.2687"
+"2012","Nuclear Electric Power Consumption","0.067087"," 8.0618"
+"2013","Nuclear Electric Power Consumption","0.069886"," 8.2444"
+"2014","Nuclear Electric Power Consumption","0.071317"," 8.3376"
+"2015","Nuclear Electric Power Consumption","0.072282"," 8.3369"
+"2016","Nuclear Electric Power Consumption","0.075667"," 8.4268"
+"2017","Nuclear Electric Power Consumption","0.078630"," 8.4190"
+"2018","Nuclear Electric Power Consumption","0.077353"," 8.4381"
+"2019","Nuclear Electric Power Consumption","0.078608"," 8.4519"
+"2020","Nuclear Electric Power Consumption","0.082165"," 8.2511"
+"2021","Nuclear Electric Power Consumption","0.081877"," 8.1309"
+"2022","Nuclear Electric Power Consumption","0.085355"," 8.0610"
+"1993","Total Fossil Fuels Consumption","0.876604","74.6801"
+"1994","Total Fossil Fuels Consumption","0.874753","76.1506"
+"1995","Total Fossil Fuels Consumption","0.870238","77.1633"
+"1996","Total Fossil Fuels Consumption","0.871940","79.6996"
+"1997","Total Fossil Fuels Consumption","0.878459","80.7810"
+"1998","Total Fossil Fuels Consumption","0.877663","81.2740"
+"1999","Total Fossil Fuels Consumption","0.873612","82.3230"
+"2000","Total Fossil Fuels Consumption","0.875142","84.6218"
+"2001","Total Fossil Fuels Consumption","0.876970","82.7998"
+"2002","Total Fossil Fuels Consumption","0.874621","83.5923"
+"2003","Total Fossil Fuels Consumption","0.875818","83.9091"
+"2004","Total Fossil Fuels Consumption","0.873850","85.6663"
+"2005","Total Fossil Fuels Consumption","0.872802","85.6227"
+"2006","Total Fossil Fuels Consumption","0.868795","84.4772"
+"2007","Total Fossil Fuels Consumption","0.867023","85.8050"
+"2008","Total Fossil Fuels Consumption","0.859217","83.0405"
+"2009","Total Fossil Fuels Consumption","0.849782","77.8625"
+"2010","Total Fossil Fuels Consumption","0.848450","80.7231"
+"2011","Total Fossil Fuels Consumption","0.843520","79.2626"
+"2012","Total Fossil Fuels Consumption","0.843217","77.3039"
+"2013","Total Fossil Fuels Consumption","0.840547","79.2243"
+"2014","Total Fossil Fuels Consumption","0.839323","80.0167"
+"2015","Total Fossil Fuels Consumption","0.837075","79.0903"
+"2016","Total Fossil Fuels Consumption","0.832363","78.3190"
+"2017","Total Fossil Fuels Consumption","0.829667","77.9071"
+"2018","Total Fossil Fuels Consumption","0.834461","81.2805"
+"2019","Total Fossil Fuels Consumption","0.832523","80.4245"
+"2020","Total Fossil Fuels Consumption","0.823156","73.1394"
+"2021","Total Fossil Fuels Consumption","0.829597","77.4536"
+"2022","Total Fossil Fuels Consumption","0.828121","78.4982"
+"1993","Total Renewable Energy Consumption","0.075247"," 4.0070"
+"1994","Total Renewable Energy Consumption","0.076894"," 4.0565"
+"1995","Total Renewable Energy Consumption","0.079796"," 4.2966"
+"1996","Total Renewable Energy Consumption","0.077531"," 4.4815"
+"1997","Total Renewable Energy Consumption","0.071740"," 4.4634"
+"1998","Total Renewable Energy Consumption","0.076324"," 4.1727"
+"1999","Total Renewable Energy Consumption","0.080760"," 4.2008"
+"2000","Total Renewable Energy Consumption","0.081311"," 4.0956"
+"2001","Total Renewable Energy Consumption","0.085037"," 3.5119"
+"2002","Total Renewable Energy Consumption","0.085225"," 3.7662"
+"2003","Total Renewable Energy Consumption","0.083080"," 3.9159"
+"2004","Total Renewable Energy Consumption","0.083877"," 4.1055"
+"2005","Total Renewable Energy Consumption","0.083188"," 4.2329"
+"2006","Total Renewable Energy Consumption","0.084482"," 4.4803"
+"2007","Total Renewable Energy Consumption","0.085470"," 4.5949"
+"2008","Total Renewable Energy Consumption","0.087189"," 5.0677"
+"2009","Total Renewable Energy Consumption","0.091188"," 5.2925"
+"2010","Total Renewable Energy Consumption","0.088651"," 5.8957"
+"2011","Total Renewable Energy Consumption","0.087996"," 6.3081"
+"2012","Total Renewable Energy Consumption","0.087937"," 6.1503"
+"2013","Total Renewable Energy Consumption","0.087471"," 6.5870"
+"2014","Total Renewable Energy Consumption","0.087456"," 6.7990"
+"2015","Total Renewable Energy Consumption","0.088236"," 6.8295"
+"2016","Total Renewable Energy Consumption","0.089558"," 7.1197"
+"2017","Total Renewable Energy Consumption","0.089657"," 7.3835"
+"2018","Total Renewable Energy Consumption","0.086629"," 7.5346"
+"2019","Total Renewable Energy Consumption","0.087490"," 7.5938"
+"2020","Total Renewable Energy Consumption","0.092863"," 7.3005"
+"2021","Total Renewable Energy Consumption","0.087089"," 7.6443"
+"2022","Total Renewable Energy Consumption","0.085040"," 8.0909"
