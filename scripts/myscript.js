@@ -1,7 +1,7 @@
 // Width and height
-const w = 1000;
-const h = 300;
-const margin = {top: 25, right: 150, bottom: 50, left: 150};
+const w = 850;
+const h = 350;
+const margin = {top: 50, right: 100, bottom: 75, left: 100};
 const innerHeight = h - margin.top - margin.bottom;
 const innerWidth = w - margin.left - margin.right;
 
