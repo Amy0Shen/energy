@@ -78,6 +78,9 @@ colSums(is.na(renewable)) %>%
 rowSums(is.na(head(renewable))) %>%
   sort(decreasing = TRUE)
 ```
+There are missing values in the data of four columns: "Solar.Energy.Consumption", "Wind.Energy.Consumption", "Biofuels.Production", "Biofuels.Consumption".
+
+The dataset contains data for each month from January 1973 to August 2023. Since the data set is large, we first perform annual average processing on the data set.
 
 There are missing values in the data of four columns: "Solar.Energy.Consumption", "Wind.Energy.Consumption", "Biofuels.Production", "Biofuels.Consumption".
 

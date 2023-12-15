@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -62,6 +96,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -91,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Energy</a> 
         <div class="sidebar-tools-main">
-    <a href="https://amy0shen.github.io/energy/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+    <a href="https://github.com/Amy0Shen/energy" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
     </div>
       </div>
@@ -142,10 +178,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
-  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
+  <li><a href="#technical-description" id="toc-technical-description" class="nav-link active" data-scroll-target="#technical-description"><span class="header-section-number">2.1</span> Technical description</a></li>
+  <li><a href="#research-plan" id="toc-research-plan" class="nav-link" data-scroll-target="#research-plan"><span class="header-section-number">2.2</span> Research plan</a></li>
+  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.3</span> Missing value analysis</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="https://amy0shen.github.io/energy/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://amy0shen.github.io/energy/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/Amy0Shen/energy/edit/main/data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/Amy0Shen/energy/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -167,11 +204,164 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="description" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
+<section id="technical-description" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="technical-description"><span class="header-section-number">2.1</span> Technical description</h2>
+<p>The data is collected and distributed by the U.S. Energy Information Administration. The data source contains data for each month from January 1973 to August 2023, updated on a monthly basis. And the dataset we are currently using has been updated as of November 27th.</p>
+<p>Data source link: <a href="https://www.eia.gov/totalenergy/data/monthly/" class="uri">https://www.eia.gov/totalenergy/data/monthly/</a></p>
+<p>This data source contains multiple data tables, and we will focus on the following data tables:</p>
+<ol type="1">
+<li>Energy Review Category: “Table_1.1_Primary_Energy_Overview” (608 rows each for one month, 13 columns with one column of months and 12 columns of energy production and consumption data), “Table_1.2_Primary_Energy_Production_by_Source” (608 rows each for one month, 14 columns with one column of months and 13 columns of energy production data), “Table_1.3_Primary_Energy_Consumption_by_Source” (608 rows each for one month, 13 columns with one column of months and 12 columns of energy consumption data)</li>
+<li>Renewable Energy Category: “Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source” (608 rows each for one month, 14 columns with one column of months and 13 columns of renewable energy production and consumption data)</li>
+<li>Environment Category: “Table_11.1_Carbon_Dioxide_Emissions_From_Energy_Consumption_by_Source” (608 rows each for one month, 15 columns with one column of months and 14 columns of <span class="math inline">\(CO_2\)</span> emission data by different energy source)</li>
+<li>Energy Prices Category</li>
+</ol>
+<p>Given that all tables possess a common column ‘Month’ representing time, we are using ‘Month’ as the primary key to consolidate all tables.</p>
 </section>
-<section id="missing-value-analysis" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
+<section id="research-plan" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="research-plan"><span class="header-section-number">2.2</span> Research plan</h2>
+<ol type="1">
+<li><p><strong>Unveiling Energy Trends:</strong></p>
+<p>Data Source: Utilize “Table_1.2” and “Table_1.3” from the dataset.</p>
+<p>Techniques: Implement histograms or ridgeline plots to depict consumption trends of different energy sources over time. Visualize shifts in energy consumption patterns, highlighting preferences across diverse energy sources.</p></li>
+<li><p><strong>Balancing Production and Consumption:</strong></p>
+<p>Data Source: Utilize “Table_1.2” and “Table_1.3” from the dataset.</p>
+<p>Techniques: Utilize boxplots or scatterplots to analyze the relationship between energy production growth and consumption trends. Visual representation showcasing alignment or divergence between production and consumption trends.</p></li>
+<li><p><strong>Price Dynamics and Supply-Demand:</strong></p>
+<p>Data Source: Utilize “Energy Prices” and “Table_1.1” from the dataset.</p>
+<p>Techniques: Employ bar plots, Cleveland dot plots, and heatmaps to illustrate price fluctuations and their correlation with supply-demand dynamics. Visual representations elucidating changes in price dynamics and their relationship with supply and demand shifts.</p></li>
+<li><p><strong>Renewable Energy’s impact on Conventional Sources</strong></p>
+<p>Data Source: Utilize “Table_10.1”, “Table_1.2” and “Table_1.3” from the dataset.</p>
+<p>Techniques: Utilize biplots and parallel coordinate plots to compare the increasing share of renewables with traditional energy sources. Visual elucidation of potential substitution effects between renewable and conventional sources.</p></li>
+<li><p><strong>Carbon Emissions and Energy Mix:</strong></p>
+<p>Data Source: Utilize “Table_11.1”.</p>
+<p>Techniques: Implement alluvial diagrams, mosaic plots, and scatterplots to establish correlations between energy sources and U.S. carbon emissions. Visual representations showcasing the relationship between energy sources and carbon emissions, highlighting the impact of renewable integration on reducing the carbon footprint.</p></li>
+</ol>
+</section>
+<section id="missing-value-analysis" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.3</span> Missing value analysis</h2>
+<p>The three tables Table_1.2, Table_1.3 and Table_10.1 all contain missing power generation and consumption of some new energy sources during the same period. We select Table_10.1 for missing value analysis.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openxlsx)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>renewable <span class="ot">&lt;-</span> <span class="fu">read.xlsx</span>(<span class="st">"Table_10.1_Renewable_Energy_Production_and_Consumption_by_Source.xlsx"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>renewable<span class="sc">$</span>Month <span class="ot">&lt;-</span><span class="fu">as.Date</span>(renewable<span class="sc">$</span>Month, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(renewable)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Solar.Energy.Consumption            Wind.Energy.Consumption 
+                               132                                120 
+               Biofuels.Production               Biofuels.Consumption 
+                                96                                 96 
+                             Month             Wood.Energy.Production 
+                                 0                                  0 
+   Total.Biomass.Energy.Production  Total.Renewable.Energy.Production 
+                                 0                                  0 
+   Hydroelectric.Power.Consumption      Geothermal.Energy.Consumption 
+                                 0                                  0 
+           Wood.Energy.Consumption           Waste.Energy.Consumption 
+                                 0                                  0 
+  Total.Biomass.Energy.Consumption Total.Renewable.Energy.Consumption 
+                                 0                                  0 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowSums</span>(<span class="fu">is.na</span>(<span class="fu">head</span>(renewable))) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 2 3 4 5 6 
+4 4 4 4 4 4 </code></pre>
+</div>
+</div>
+<p>There are missing values in the data of four columns: “Solar.Energy.Consumption”, “Wind.Energy.Consumption”, “Biofuels.Production”, “Biofuels.Consumption”.</p>
+<p>The dataset contains data for each month from January 1973 to August 2023. Since the data set is large, we first perform annual average processing on the data set.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>renewable<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">substr</span>(renewable<span class="sc">$</span>Month, <span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>renewable_year <span class="ot">&lt;-</span> renewable <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="sc">-</span>Month, mean))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>newdata <span class="ot">&lt;-</span> renewable_year <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(key, value, <span class="sc">-</span>year) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">missing =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(value), <span class="st">"yes"</span>, <span class="st">"no"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(newdata, <span class="fu">aes</span>(<span class="at">x =</span> key, <span class="at">y =</span> <span class="fu">fct_rev</span>(year), <span class="at">fill =</span> missing)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Renewable with NAs added"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">''</span>) <span class="sc">+</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>() <span class="sc">+</span> <span class="co"># discrete scale</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>newdata <span class="ot">&lt;-</span> newdata <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(key) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Std =</span> (value<span class="sc">-</span><span class="fu">mean</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))<span class="sc">/</span><span class="fu">sd</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(newdata, <span class="fu">aes</span>(<span class="at">x =</span> key, <span class="at">y =</span> <span class="fu">fct_rev</span>(year), <span class="at">fill =</span> Std)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">''</span>) <span class="sc">+</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span><span class="st">"yellow"</span>, <span class="at">na.value =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(redav)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_missing</span>(renewable_year, <span class="at">percent =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+<p>In the above pictures, we can clearly see that in the 1973-1983 interval, some data related to new energy are missing, such as “Solar Energy Consumption”, “Wind Energy Consumption”, “Biofuels Production”, and “Biofuels Consumption”. Among them, solar energy consumption has the most missing data. The lack of data in this part may be related to the level of technological development at that time, when new energy power generation was not popular. The lack of popularization of new energy power generation directly leads to the lack of data on new energy consumption.</p>
 
 
 </section>
