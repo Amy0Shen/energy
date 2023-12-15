@@ -2,7 +2,7 @@
 
 The data range of all data tables we use is from 1973.1 to 2023.8. However, due to the existence of missing values in early data and the large amount of total data, we mainly consider the data of the past thirty years, that is, the data from 1993 to 2023.
 
-### **Unveiling Energy Trends**
+## **Unveiling Energy Trends**
 
 ```         
 Data Source: Utilize "Table_1.2" and "Table_1.3".
@@ -107,7 +107,7 @@ Hence, employing time series analysis, we extracted the changes in Fossil fuel c
 The results from the graph indicate that in comparison to other months, Fossil fuel consumption is notably higher in December and January, as well as in July and August. This aligns with our assumptions regarding seasonal trends.
 
 
-### **Balancing Production and Consumption**
+## **Balancing Production and Consumption**
 
 ```         
 Data Source: Utilize "Table_1.1".
@@ -191,7 +191,7 @@ combined_plot
 
 This analysis revealed that total production exceeds or matches consumption. Additionally, our observation indicated that over the past thirty years, the United States primarily relied on domestic energy production. Furthermore, the net energy import quantity in the US has shown a declining trend since the late twentieth century. In recent years, the net import quantity has turned negative, indicating that energy exports exceed energy imports.
 
-### **Price Dynamics and Supply-Demand**
+## **Price Dynamics and Supply-Demand**
 
 ```         
 Data Source: Utilize "Table_9.1", "Table_9.10" and "Table_1.1".
@@ -363,7 +363,7 @@ Creating a heatmap depicting the relationship between monthly energy supply and 
 
 In contrast, the heatmap depicting the relationship between oil price and supply and demand doesn't show a clear trend. This might be due to significant fluctuations in oil prices over the last thirty years. There are likely other factors that exert a more significant influence on oil prices, such as political factors, resulting in the lack of a distinct trend in the heatmap.
 
-### Renewable Energy's impact on Conventional Sources
+## Renewable Energy's impact on Conventional Sources
 
 ```         
 Data Source: Utilize "Table_10.1", "Table_1.2" and "Table_1.3" from the dataset.
@@ -500,10 +500,12 @@ yearlyconsumption <- consumption_scaled |>
 
 yearlyconsumption_sorted <- yearlyconsumption |> 
   arrange(Type %in% c("Total Renewable Energy Consumption", "Nuclear Electric Power Consumption", "Total Fossil Fuels Consumption"), Type)
+yearlyconsumption_sorted$Consumption <- format(yearlyconsumption_sorted$Consumption, digits = 5)
+yearlyconsumption_sorted$`Scaled Consumption` <- format(yearlyconsumption_sorted$`Scaled Consumption`, digits = 5)
 write.csv(yearlyconsumption_sorted, "Yearly Consumption.csv", row.names=FALSE)
 ```
 
-### Carbon Emissions and Energy Mix
+## **Carbon Emissions and Energy Mix**
 
 ```         
 Data Source: Utilize "Table_11.1".
